@@ -2,6 +2,14 @@ const Sim = require('./../.sim-dist');
 var express = require('express');
 const BattleTurn = require('./battle-turn')
 const bodyParser = require('body-parser');
+var exec = require('child_process').exec;
+const kill = require('kill-port')
+
+exec('yarn start', {
+  cwd: './react-ui'
+}, function(error, stdout, stderr) {
+    console.log(stdout);
+});
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -29,12 +37,9 @@ var output;
     }
 })();
 
-stream.write(`>start {"formatid":"gen7ou"}`);
-stream.write(`>player p1 {"name":"Me", "team": "Lumineon||focussash|1|defog,scald,icebeam,uturn||85,85,85,85,85,85||||83|]Glaceon||lifeorb||toxic,hiddenpowerground,shadowball,icebeam||81,,85,85,85,85||,0,,,,||83|]Crabominable||choiceband|1|closecombat,earthquake,stoneedge,icehammer||85,85,85,85,85,85||||83|]Toxicroak||lifeorb|1|drainpunch,suckerpunch,gunkshot,substitute||85,85,85,85,85,85||||79|]Bouffalant||choiceband||earthquake,megahorn,headcharge,superpower||85,85,85,85,85,85||||83|]Qwilfish||blacksludge|H|thunderwave,destinybond,liquidation,painsplit||85,85,85,85,85,85||||83|"}`);
-stream.write(`>player p2 {"name":"AI", "team": "Lumineon||focussash|1|defog,scald,icebeam,uturn||85,85,85,85,85,85||||83|]Glaceon||lifeorb||toxic,hiddenpowerground,shadowball,icebeam||81,,85,85,85,85||,0,,,,||83|]Crabominable||choiceband|1|closecombat,earthquake,stoneedge,icehammer||85,85,85,85,85,85||||83|]Toxicroak||lifeorb|1|drainpunch,suckerpunch,gunkshot,substitute||85,85,85,85,85,85||||79|]Bouffalant||choiceband||earthquake,megahorn,headcharge,superpower||85,85,85,85,85,85||||83|]Qwilfish||blacksludge|H|thunderwave,destinybond,liquidation,painsplit||85,85,85,85,85,85||||83|"}`);
-stream.write(`>p1 team 123456`);
-stream.write(`>p2 team 123456`);
-
+stream.write(`>start {"formatid":"gen7randombattle"}`);
+stream.write(`>player p1 {"name":"Me"}`);
+stream.write(`>player p2 {"name":"AI"}`);
 
 var fainted = []
 var waitForP1 = false;
@@ -55,7 +60,6 @@ function messageParser(input) {
 
 function invalidChoiceParser(input) {
   if(/error\|\[Invalid choice\]/.test(input)) {
-  //  console.log("TRUE!!!");
     console.log(p2LastCommand);
     return true;
   }
@@ -116,6 +120,10 @@ rl.on('line', function(line) {
     rl.prompt();
 }).on('close', function() {
     console.log('Have a great day!');
+    kill(3000)
+     .then(console.log)
+     .catch(console.log)
+
     process.exit(0);
 });
 
@@ -130,7 +138,6 @@ app.use(function(req, res, next) {
 // app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/input', function(req, res) {
-
     var move = req.body.move
     var switchPoke = req.body.switch
 
