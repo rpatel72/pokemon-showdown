@@ -1,6 +1,5 @@
 ## TODO
 
-- Get example Simulator BattleStream working
-- Redo the Web UI
+- Redo the Web UI?
 - Start adding custom modes
 - Create a 'Custom Mode Builder' feature
