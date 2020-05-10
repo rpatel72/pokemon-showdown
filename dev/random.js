@@ -5,11 +5,6 @@ const bodyParser = require('body-parser');
 var exec = require('child_process').exec;
 const kill = require('kill-port')
 
-exec('yarn start', {
-  cwd: './react-ui'
-}, function(error, stdout, stderr) {
-    console.log(stdout);
-});
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
 
