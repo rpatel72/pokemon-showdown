@@ -71,7 +71,7 @@ describe("Dynamax", function () {
 
 	it('G-Max Steelsurge hazard should deal 2x damage to Eiscue', function () {
 		battle = common.createBattle([[
-			{species: "Copperajah-Gmax", moves: ['ironhead']},
+			{species: "Copperajah", moves: ['ironhead'], gigantamax: true},
 		], [
 			{species: "Pyukumuku", moves: ['uturn']},
 			{species: "Eiscue", ability: 'iceface', moves: ['splash']},
@@ -117,17 +117,5 @@ describe("Dynamax", function () {
 		battle.makeChoices();
 		battle.makeChoices('move 1', 'auto');
 		assert.cantMove(() => battle.choose('p1', 'move splash dynamax'));
-	});
-
-	it('Max Guard should be disallowed by Taunt', function () {
-		battle = common.createBattle([[
-			{species: "Feebas", moves: ['splash', 'tackle']},
-		], [
-			{species: "Wynaut", moves: ['taunt', 'splash']},
-		]]);
-		battle.makeChoices('move tackle dynamax', 'auto');
-		// battle.makeChoices('move splash', 'auto');
-		// console.log(battle.getDebugLog());
-		assert.cantMove(() => battle.choose('p1', 'move splash'), 'Feebas', 'Max Guard', false);
 	});
 });
